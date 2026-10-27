@@ -44,34 +44,25 @@ Farbwerte werden auf 0–255 begrenzt. Jeder Filter erhält die Alpha-Werte der 
 
 Der Datenfluss lautet: Originalbild → erster Filter → zweiter Filter → weitere Filter → Ergebnisanzeige. Bei jeder Änderung beginnt die Berechnung wieder beim Original.
 
+
 ## Tests
 
-In IntelliJ `tests/FilterTests.java` öffnen und dessen `main` starten. Optional unter **Run → Edit Configurations → Program arguments** `--gui` eintragen: Dann wird zusätzlich das Fenster kurz geöffnet und wieder geschlossen.
+Das Projekt wurde mit Java 25.0.4.1 erfolgreich kompiliert.
 
-Aus dem Projektordner in PowerShell:
+Es wurden 288 automatisierte Prüfungen ohne grafische Oberfläche
+und 289 Prüfungen einschließlich des Fensterstarts bestanden.
 
-```powershell
-$jdk25 = 'C:\Users\osama\.jdks\ms-25.0.4.1\bin'
-New-Item -ItemType Directory -Force out/classes | Out-Null
-$sources = @(Get-ChildItem src,tests -Recurse -Filter *.java | ForEach-Object { $_.FullName })
-& "$jdk25\javac.exe" -encoding UTF-8 --release 25 -d out/classes $sources
-& "$jdk25\java.exe" '-Djava.awt.headless=true' -cp out/classes FilterTests
-& "$jdk25\java.exe" -cp out/classes FilterTests --gui
-& "$jdk25\java.exe" -cp out/classes Main
-```
+Die Tests prüfen unter anderem:
 
-Durchgeführt mit Java 25.0.4.1: Kompilierung erfolgreich; **288 Prüfungen ohne Fenster**, **289 Prüfungen einschließlich Fensterstart** bestanden. Geprüft wurden bekannte Pixelwerte, neutrale Einstellungen, Begrenzung, Schwellwertgrenzen, Gauß, Sobel, Schärfung, Transparenz, kleine Bilder, Originalschutz, Filterreihenfolge, unabhängige Einstellungen, Abbruch, JPG-/PNG-Laden, ungültige/andere Formate und das Zeichnen der Bildanzeige.
+- Bildfilter und ihre Reihenfolge
+- Filtereinstellungen und Grenzwerte
+- Transparenz und den Schutz des Originalbilds
+- Das Laden von JPG- und PNG-Dateien
+- Den Umgang mit ungültigen Dateien
+- Den Start des Anwendungsfensters
 
-Der Fensterstart wurde automatisch geprüft. Die vollständige Bedienung per Maus, der native Dateidialog und das visuelle Ergebnis mit eigenen Fotos wurden nicht manuell geprüft. Dafür in IntelliJ je ein JPG und transparentes PNG öffnen, Filter hinzufügen/entfernen/verschieben, Regler verändern und das Fenster vergrößern. Helligkeit vor Thresholding und danach in umgekehrter Reihenfolge ausprobieren; die Ergebnisse sollten unterschiedlich sein. Auch eine ungültige Datei mit `.png`-Endung auswählen und die Fehlermeldung prüfen.
+### Noch manuell zu prüfen
 
-## شرح بالعربية
-
-البرنامج يستخدم **Java 25** وSwing دون مكتبات إضافية. افتح المشروع في IntelliJ، وتأكد أن SDK هو `ms-25` ومستوى اللغة 25، ثم افتح `src/Main.java` واضغط زر التشغيل الأخضر بجانب `main`.
-
-اضغط **Bild öffnen …** لفتح صورة JPG أو PNG. اختر فلترًا من القائمة واضغط **Hinzufügen**، ثم حدده لتغيير إعداداته. استخدم **Nach oben / Nach unten** لتغيير الترتيب و**Entfernen** للحذف. تُطبّق الفلاتر من أعلى القائمة إلى أسفلها، وتبدأ كل عملية حساب من الصورة الأصلية دون تغييرها. يحتفظ كل عنصر بإعداداته الخاصة، وتعمل المعالجة في الخلفية.
-
-`Main` يبدأ البرنامج، وملفات `ui` تبني الواجهة وتعرض الصور. `ImageFiles` يقرأ الملفات. `ImageFilter` يحدد واجهة الفلتر، و`FilterType` يحدد الأنواع، و`FilterStep` يحفظ الإعدادات، و`ImageFilters` ينفذ الحسابات. ملف `FilterTests` يحتوي اختبارات يمكن تشغيلها من `main` في IntelliJ.
-
-نجح التجميع باستخدام Java 25. نجح **288 فحصًا دون نافذة** و**289 فحصًا مع اختبار فتح النافذة وإغلاقها**. تشمل الاختبارات قيم البكسلات، ترتيب الفلاتر، الحفاظ على الأصل والشفافية، الصور الصغيرة وفتح JPG وPNG ورفض الملفات غير الصالحة. لم تُختبر جميع خطوات الاستخدام بالماوس ولا اختيار الملفات بصرياً؛ جرّبها في IntelliJ حسب التعليمات أعلاه.
-
-لم نجد التكليف الكامل للأستاذ أو برنامجه النموذجي. جميع الوظائف الإلزامية المذكورة منفذة؛ Toonify اختياري وغير منفذ، وحفظ النتائج غير مطلوب في القائمة الحالية وغير مضاف.
+Die vollständige Bedienung mit der Maus, der Dateiauswahldialog
+und die visuellen Ergebnisse mit eigenen Bildern wurden noch nicht
+manuell geprüft.
